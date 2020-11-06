@@ -12,7 +12,7 @@ function setup() {
     background(0);
     
     for(let i = 0; i < 6; i++){
-        biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 5, 50, 500, 5, 5, i%2);
+        biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 5, 50, 500, 200, Math.PI/4, 5, i%2);
     }
 }
 
