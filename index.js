@@ -10,9 +10,10 @@ let biller = [];
 function setup() {
     createCanvas(W, H);
     background(0);
+    angleMode(DEGREES);
     
     for(let i = 0; i < 6; i++){
-        biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 5, 50, 500, 200, Math.PI/4, 5, i%2);
+        biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2);
     }
 }
 
@@ -21,6 +22,10 @@ function updateEntities() {
     // Split these into two, as I think doing them both at once for each beetle could lead to dead beetles being alive for an extra frame, probably not worth splitting the loop for that but w/e I'm tired - H
     for(let i = 0; i < biller.length; i++){
         biller[i].update();
+        for(let j = 0; j < biller[i].bulletarray.length; j++){
+            biller[i].bulletarray[j].update();
+            biller[i].bulletarray[j].render();
+        }
     }
     for(let i = 0; i < biller.length; i++){
         biller[i].render();
