@@ -18,7 +18,7 @@ function setup() {
 
 // Function for updating entities (duh)
 function updateEntities() {
-    // Split these into two, as I think doing them both at once for each bug could lead to dead bugs being alive for an extra frame, probably not worth splitting the loop for that but w/e I'm tired - H
+    // Split these into two, as I think doing them both at once for each beetle could lead to dead beetles being alive for an extra frame, probably not worth splitting the loop for that but w/e I'm tired - H
     for(let i = 0; i < biller.length; i++){
         biller[i].update();
     }
