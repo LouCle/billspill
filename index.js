@@ -6,8 +6,11 @@ let borderW = 100;
 let borderH = 100;
 let biller = [];
 let ents = {
-    bullets : []
+    bullets : [],
+    explosions : []
 }
+
+const DEAD = 0x123456789
 
 // Setup function (runs once)
 function setup() {
@@ -35,9 +38,9 @@ function updateEntities() {
 
     for (let i of Object.keys(ents)) {
         for (let j in ents[i]) {
-            let dead = ents[i][j].update()
+            let rcode = ents[i][j].update()
                 
-            if (dead) {
+            if (rcode == DEAD) {
                 ents[i].splice(j,1)
             }
         }

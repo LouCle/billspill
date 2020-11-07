@@ -12,10 +12,10 @@ class Bullet {
         // Move bullet
         this.pos.add(this.vel);
 
-        if (this.pos.x < 0 || this.pos.x > W ||
-            this.pos.y < 0 || this.pos.y > H) {
-
-            return true
+        if (this.pos.x < borderW || this.pos.x > (W-borderW) ||
+            this.pos.y < borderH || this.pos.y > (H-borderH)) {
+            ents.explosions.push(new Explosion(this.pos.x, this.pos.y, 0, 10, 10, 0.2))
+            return DEAD
         }
     }
 
