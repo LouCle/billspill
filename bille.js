@@ -38,6 +38,7 @@ class BilleDNA {
     }
 
     // unused getter
+    // will be useful later when I get rid of the whole applied() bullshit
     /*
     get stats() {
         let temp = new BilleDNA()
@@ -99,8 +100,12 @@ class Bille {
         // Draw beetle's FOV
         stroke(0,255,255)
         strokeWeight(2)
-        line(this.pos.x, this.pos.y, this.pos.x+cos(this.rot+this.sightradius/2)*this.sightlength, this.pos.y+sin(this.rot+this.sightradius/2)*this.sightlength)
-        line(this.pos.x, this.pos.y, this.pos.x+cos(this.rot-this.sightradius/2)*this.sightlength, this.pos.y+sin(this.rot-this.sightradius/2)*this.sightlength)
+
+        let sr = this._dna.sightradius //yeah som om jeg gider skrive det her 40 gange
+        let sl = this._dna.sightlength
+
+        line(this.pos.x, this.pos.y, this.pos.x+cos(this.rot+sr/2)*sl, this.pos.y+sin(this.rot+sr/2)*sl)
+        line(this.pos.x, this.pos.y, this.pos.x+cos(this.rot-sr/2)*sl, this.pos.y+sin(this.rot-sr/2)*sl)
         this.checkForTarget()
     }
     
