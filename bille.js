@@ -1,13 +1,8 @@
-class Bille {
-    constructor(x, y, mvel, mrot, firerate, bulletspeed, bulletsize, size, iq, sightlength, sightradius, mouth, health, team, rotdir) {
-        this.pos = createVector(x,y) // The beetle's position
-        this.vel = createVector(0,0) // The beetle's velocity
-        this.acc = createVector(0,0) // The beetle's acceleration
-        this.rot = random(360) // Which way the beetle is facing
+class BilleDNA {
+    constructor(mvel, mrot, firerate, bulletspeed, bulletsize, size, iq, sightlength, sightradius, mouth, health) {
         this.mvel = mvel // Max movement speed (or just movement speed)
         this.mrot = mrot // Max rotation speed (same)
         this.rotmult = 0.1 //Multiplier for rotationspeed (might be irrelevant with mrot existing dunno)
-        this.rotdir = rotdir //rotation direction
         this.firerate = firerate // How quickly the beetle shoots
         this.bulletspeed = bulletspeed // Speed of bullets
         this.bulletsize = bulletsize // Size of bullets
@@ -17,8 +12,18 @@ class Bille {
         this.sightradius = sightradius // The beetle's FOV basically
         this.mouth = mouth // Something with its mouth (damage up close or smth)
         this.health = health // The beetle's health
+    }
+}
+
+class Bille extends BilleDNA {
+    constructor(x, y, mvel, mrot, firerate, bulletspeed, bulletsize, size, iq, sightlength, sightradius, mouth, health, team, angvel) {
+        super(mvel, mrot, firerate, bulletspeed, bulletsize, size, iq, sightlength, sightradius, mouth, health)
+        this.pos = createVector(x,y) // The beetle's position
+        this.vel = createVector(0,0) // The beetle's velocity
+        this.acc = createVector(0,0) // The beetle's acceleration
+        this.rot = random(360) // Which way the beetle is facing
+        this.angvel = angvel //rotation direction
         this.team = team // Which team the beetle is on
-        this.bulletarray = []
     }
 
     shooting() {
@@ -40,7 +45,7 @@ class Bille {
         this.vel.add(this.acc)
         this.pos.add(this.vel)
         this.acc.mult(0)
-        this.rot += this.rotdir*this.rotmult
+        this.rot += this.angvel*this.rotmult
 
     }
 

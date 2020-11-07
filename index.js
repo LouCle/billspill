@@ -12,7 +12,6 @@ let ents = {
 
 const DEAD = 0x123456789
 
-
 // Function for updating entities (duh)
 function updateEntities() {
     // Split these into two, as I think doing them both at once for each beetle could lead to dead beetles being alive for an extra frame, probably not worth splitting the loop for that but w/e I'm tired - H)
