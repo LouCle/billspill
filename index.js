@@ -65,9 +65,56 @@ function draw() {
     mgr.draw()
 }
 
+function keyPressed() {
+    mgr.handleEvent("keyPressed")
+}
+
 function Menu() {
-    this.setup = function() {}
-    this.draw = function() {}
+    this.setup = function() {
+
+
+    }
+
+    this.menu = ["Evolution", "Skirmish", "Test"]
+    this.sel = 0
+
+    
+
+    this.draw = function() {
+
+        background(color(20,120,100))
+        textSize(100)
+        textAlign(CENTER)
+        fill(0)
+        text("Billspill", W/2, H/3)
+        fill(255)
+        text("Billspill", W/2-3, H/3-3)
+
+        textSize(50)
+        textAlign(LEFT)
+
+        for (let opt in this.menu) {
+            text( ((this.sel == opt) ? "▶ " : "  ") + this.menu[opt], W/3, 2*H/3 + opt*50)
+        }
+
+    }
+
+    this.keyPressed = function() {
+        console.log(keyCode)
+        if (keyCode === DOWN_ARROW) {
+            this.sel = (this.sel+1) % this.menu.length
+        }
+        if (keyCode === UP_ARROW) {
+            this.sel = (this.sel-1 < 0) ? this.menu.length-1 : this.sel-1
+        }
+
+        // space click
+        if (keyCode == 32) {
+            if (this.sel == 0) {
+                this.sceneManager.showScene(Game)
+            }
+        }
+    }
 }
 
 function Game() {
