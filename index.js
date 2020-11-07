@@ -5,6 +5,9 @@ let H = window.innerHeight;
 let borderW = 100;
 let borderH = 100;
 let biller = [];
+let ents = {
+    bullets : []
+}
 
 // Setup function (runs once)
 function setup() {
@@ -12,22 +15,41 @@ function setup() {
     background(0);
     angleMode(DEGREES);
     
-    for(let i = 0; i < 6; i++){
+    for (let i = 0; i < 6; i++){
         biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2);
     }
 }
 
 // Function for updating entities (duh)
 function updateEntities() {
-    // Split these into two, as I think doing them both at once for each beetle could lead to dead beetles being alive for an extra frame, probably not worth splitting the loop for that but w/e I'm tired - H
-    for(let i = 0; i < biller.length; i++){
+    // Split these into two, as I think doing them both at once for each beetle could lead to dead beetles being alive for an extra frame, probably not worth splitting the loop for that but w/e I'm tired - H)
+
+
+    for(let i in biller){
         biller[i].update();
-        for(let j = 0; j < biller[i].bulletarray.length; j++){
-            biller[i].bulletarray[j].update();
-            biller[i].bulletarray[j].render();
+        // for(let j = 0; j < biller[i].bulletarray.length; j++){
+        //     biller[i].bulletarray[j].update();
+        //     biller[i].bulletarray[j].render();
+        // }
+    }
+
+    for (let i of Object.keys(ents)) {
+        for (let j in ents[i]) {
+            let dead = ents[i][j].update()
+                
+            if (dead) {
+                ents[i].splice(j,1)
+            }
         }
     }
-    for(let i = 0; i < biller.length; i++){
+
+    for (let i of Object.keys(ents)) {
+        for (let j in ents[i]) {
+            ents[i][j].render()
+        }
+    }
+
+    for(let i in biller){
         biller[i].render();
     }
 }

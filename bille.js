@@ -4,8 +4,8 @@ class Bille {
         this.vel = createVector(0,0); // The beetle's velocity
         this.acc = createVector(0,0); // The beetle's acceleration
         this.rot = random(360); // Which way the beetle is facing
-        this.mvel = mvel; // Is this how fast it can move?
-        this.mrot = mrot; // And is this how fast it can rotate?
+        this.mvel = mvel; // Max movement speed (or just movement speed)
+        this.mrot = mrot; // Max rotation speed (same)
         this.firerate = firerate; // How quickly the beetle shoots
         this.bulletspeed = bulletspeed; // Speed of bullets
         this.bulletsize = bulletsize; // Size of bullets
@@ -22,7 +22,7 @@ class Bille {
     shooting() {
         // Fire each firerate'th frame
         if(frameCount % this.firerate == 0){
-            this.bulletarray.push(new Bullet(this.pos.x, this.pos.y, this.rot, this.bulletspeed, this.bulletsize, this.team));
+            ents.bullets.push(new Bullet(this.pos.x, this.pos.y, this.rot, this.bulletspeed, this.bulletsize, this.team));
         }
     }
 
@@ -34,6 +34,7 @@ class Bille {
         this.vel.add(this.acc);
         this.pos.add(this.vel);
         this.acc.mult(0);
+
     }
 
     render() {
