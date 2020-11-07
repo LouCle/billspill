@@ -1,5 +1,3 @@
-// if we are gonna add more entities, Bullet should inherit some general Entity class
-
 class Bullet {
     constructor(x, y, direction, speed, size, team) {
         this.pos = createVector(x,y) // The bullet's position
