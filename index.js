@@ -12,16 +12,6 @@ let ents = {
 
 const DEAD = 0x123456789
 
-// Setup function (runs once)
-function setup() {
-    createCanvas(W, H)
-    background(0)
-    angleMode(DEGREES)
-
-    for (let i = 0; i < 6; i++){
-        biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2, 1)
-    }
-}
 
 // Function for updating entities (duh)
 function updateEntities() {
@@ -58,8 +48,43 @@ function updateEntities() {
 
 }
 
-// Draw function (runs in a loop)
+let mgr;
+
+function setup() {
+    createCanvas(W, H)
+    background(0)
+
+    mgr = new SceneManager()
+
+    mgr.addScene(Game)
+    mgr.addScene(Menu)
+    mgr.showScene(Menu)
+}
+
 function draw() {
-    background(color(50,150,100))
-    updateEntities()
+    mgr.draw()
+}
+
+function Menu() {
+    this.setup = function() {}
+    this.draw = function() {}
+}
+
+function Game() {
+
+    this.setup = function () {
+        createCanvas(W, H)
+        background(0)
+        angleMode(DEGREES)
+
+        for (let i = 0; i < 6; i++){
+            biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2, 1)
+        }
+    }
+
+    // Draw function (runs in a loop)
+    this.draw = function () {
+        background(color(50,150,100))
+        updateEntities()
+    }
 }
