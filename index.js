@@ -17,9 +17,9 @@ function setup() {
     createCanvas(W, H);
     background(0);
     angleMode(DEGREES);
-    
+
     for (let i = 0; i < 6; i++){
-        biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2);
+        biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2, 1);
     }
 }
 
@@ -39,7 +39,7 @@ function updateEntities() {
     for (let i of Object.keys(ents)) {
         for (let j in ents[i]) {
             let rcode = ents[i][j].update()
-                
+
             if (rcode == DEAD) {
                 ents[i].splice(j,1)
             }
@@ -55,6 +55,7 @@ function updateEntities() {
     for(let i in biller){
         biller[i].render();
     }
+
 }
 
 // Draw function (runs in a loop)
