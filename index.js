@@ -3,8 +3,10 @@
 let W = window.innerWidth
 let H = window.innerHeight
 let borderW = 100
+let BILLE_AMOUNT = 6
 let borderH = 100
 let biller = []
+let dnas = [] // dna, where index corresponds to team
 let ents = {
     bullets : [],
     explosions : []
@@ -110,21 +112,85 @@ function Menu() {
         // space click
         if (keyCode == 32) {
             if (this.sel == 0) {
-                this.sceneManager.showScene(Game)
+                this.sceneManager.showScene(Betting)
             }
         }
     }
 }
 
+// scene for each teams respective evolution tree, and betting
+function Betting() {
+
+    let nodes = []
+
+    this.setup = function() {
+        background(color(20,120,100))
+
+        // if it's the first time you're loading the game, it's as if dnas[] is empty, so we make two basic DNAs for each team
+        if (dnas.length == 0) {
+            // for now, only 2 teams
+            for (let i = 0; i < 2; i++) {
+                dnas.push(new BilleDNA(5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2))
+            }
+        }
+
+        // here we create nodes to be displayed. A node is basically just an upgrade from BilleDNA.upgradetree
+        for (let dna_for_team in dnas) {
+
+            // var for parent index
+            let p = 0
+            for (let upgrade in dnas[dna_for_team].upgradetree) {
+
+                // create parent node, if it's the first upgrade (mutation, evolution whatever)
+                if (upgrade == 0) {
+                    nodes.push(new Node(100 + dna_for_team * W/2, H/4, null, dna_for_team, dnas[dna_for_team].upgradetree[upgrade]))
+
+                    // since the last pushed node is a parent, set p to that index
+                    p = nodes.length - 1
+                }
+
+                /* create child nodes, if it's a subsequent upgrade (yada). Form the Node class,
+                   its position is given from its parent i.e. nodes[p] */
+                if (upgrade > 0) {
+                    nodes.push(new Node(null, null, nodes[p], dna_for_team, dnas[dna_for_team].upgradetree[upgrade]))
+                }
+
+            }
+        }
+
+        // for testing
+        console.log(nodes)
+
+        
+    }
+
+    this.draw = function() {
+        for (let node of nodes) {
+            node.render()
+        }
+    }
+
+    this.keyPressed = function() {
+        
+
+        // space click to go to the fight
+        // needs to be added: ability to actually bet on a team and so on
+        if (keyCode == 32) {
+            this.sceneManager.showScene(Game)
+        }
+    }
+}
+
+// scene for beetle teams actually fighting
 function Game() {
 
     this.setup = function () {
-        createCanvas(W, H)
         background(0)
         angleMode(DEGREES)
 
-        for (let i = 0; i < 6; i++){
-            biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2, 1)
+        for (let i = 0; i < BILLE_AMOUNT; i++) {
+            // create BILLE_AMOUNT of biller, using the dna of the respective team
+            biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), dnas[i%2], i%2, 1)
         }
     }
 
