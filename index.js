@@ -123,6 +123,8 @@ function Betting() {
 
     let nodes = []
 
+    let sel = 0;
+
     this.setup = function() {
         background(color(20,120,100))
 
@@ -165,6 +167,12 @@ function Betting() {
     }
 
     this.draw = function() {
+        background(color(20,120,100))
+
+        noStroke()
+        fill(color('rgba(100,100,100,0.5)'))
+        rect(sel*W/2, 0, W/2, H)
+
         for (let node of nodes) {
             node.render()
         }
@@ -177,6 +185,13 @@ function Betting() {
         // needs to be added: ability to actually bet on a team and so on
         if (keyCode == 32) {
             this.sceneManager.showScene(Game)
+        }
+
+        if (keyCode == RIGHT_ARROW) {
+            sel = (sel+1) % 2
+        }
+        if (keyCode == LEFT_ARROW) {
+            sel = (sel+1) % 2
         }
     }
 }
