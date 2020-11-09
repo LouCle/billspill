@@ -1,19 +1,26 @@
 class Node {
-    constructor(x, y, parent, team, upgrade) {
-        this.parent = parent
-        let deg = random(360)
-        this.pos = !parent ? createVector(x,y) : createVector(parent.pos.x + 40, parent.pos.y + 60)
+    constructor(W, H, team, upgrade) {
         this.team = team
         this.upgrade = upgrade
     }
 
-    render() {
+    render(node,len) {
         fill(255)
-        if (this.parent) {
-            line(this.parent.pos.x, this.parent.pos.y, this.pos.x, this.pos.y)
-        }
+        let deg = 90
+
+        let pnode = !node ? node : node - 1
+
+        let dist = 50
+
+        let px = this.team * W/2 + W/6
+        let py = H/8 + pnode*dist
+        let x = this.team * W/2 + W/6
+        let y = H/8 + node*dist
+
+        stroke(255)
+
         let key = Object.keys(this.upgrade)[0]
         textSize(30)
-        text("+" + this.upgrade[key] + " " + key, this.pos.x, this.pos.y)
+        text("+" + this.upgrade[key] + " " + key, x, y)
     }
 }

@@ -138,25 +138,9 @@ function Betting() {
 
         // here we create nodes to be displayed. A node is basically just an upgrade from BilleDNA.upgradetree
         for (let dna_for_team in dnas) {
-
-            // var for parent index
-            let p = 0
+            nodes.push([]) // create an array of nodes for each team
             for (let upgrade in dnas[dna_for_team].upgradetree) {
-
-                // create parent node, if it's the first upgrade (mutation, evolution whatever)
-                if (upgrade == 0) {
-                    nodes.push(new Node(100 + dna_for_team * W/2, H/4, null, dna_for_team, dnas[dna_for_team].upgradetree[upgrade]))
-
-                    // since the last pushed node is a parent, set p to that index
-                    p = nodes.length - 1
-                }
-
-                /* create child nodes, if it's a subsequent upgrade (yada). Form the Node class,
-                   its position is given from its parent i.e. nodes[p] */
-                if (upgrade > 0) {
-                    nodes.push(new Node(null, null, nodes[p], dna_for_team, dnas[dna_for_team].upgradetree[upgrade]))
-                }
-
+                nodes[dna_for_team].push(new Node(W, H, dna_for_team, dnas[dna_for_team].upgradetree[upgrade]))
             }
         }
 
@@ -169,12 +153,13 @@ function Betting() {
     this.draw = function() {
         background(color(20,120,100))
 
-        noStroke()
         fill(color('rgba(100,100,100,0.5)'))
         rect(sel*W/2, 0, W/2, H)
 
-        for (let node of nodes) {
-            node.render()
+        for (let team in nodes) {
+            for (let node in nodes[team]) {
+                nodes[team][node].render(node, nodes[team].length)
+            }
         }
     }
 
