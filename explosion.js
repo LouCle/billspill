@@ -17,7 +17,6 @@ class Explosion {
 
     update() {
         if (this.frames == 0 && this.bille) {
-            console.log(this.bille, this.team)
             biller[this.team?0:1][this.bille].health -= this.damage
         }
 

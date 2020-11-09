@@ -43,18 +43,39 @@ class Bille {
             ents.bullets.push(new Bullet(this.pos.x, this.pos.y, this.rot, this.bulletspeed, this.bulletsize, this.team))
         }
     }
+    
+    turning() {
+        // Turn to look at enemy
+        let lowestDist = []
+        for (let i in biller[int(!this.team)]) {
+            let enemyBille = biller[int(!this.team)][i]
+            lowestDist.push([ds2(this.pos.x,this.pos.y,enemyBille.pos.x,enemyBille.pos.y),i])
+        }
+        lowestDist.sort(function(a, b) {
+            if (a[0] === b[0]) {
+                return 0
+            }
+            else {
+                return (a[0] < b[0]) ? -1 : 1
+            }
+        })
+        let chosenBille = biller[int(!this.team)][lowestDist[0][1]]
+        let desiredTurn = p5.Vector.angleBetween(p5.Vector.sub(chosenBille.pos, this.pos), p5.Vector.fromAngle(this.rot))
+        this.angvel = desiredTurn
+    }
 
     update() {
 
         if (this.health <= 0) {
             return DEAD
         }
-
+        
+        // Turning
+        if(frameCount%60==0) this.turning()
+        
         // Shooting
         this.shooting()
         this.move()
-
-        
     }
 
     move() {
@@ -62,8 +83,8 @@ class Bille {
         this.vel.add(this.acc)
         this.pos.add(this.vel)
         this.acc.mult(0)
-        //this.rot += this.angvel*this.rotmult
-
+        
+        this.rot += this.angvel*this.rotmult;
     }
 
     render() {
@@ -78,6 +99,10 @@ class Bille {
         fill(this.team ? 20 : 235)
         textSize(30)
         text(this.health, this.pos.x, this.pos.y-40)
+        
+        // Rotation mark
+        stroke(255,0,0)
+        line(this.pos.x,this.pos.y,this.pos.x+cos(this.rot)*this.size/2,this.pos.y+sin(this.rot)*this.size/2)
 
         // Draw beetle's FOV
         /*
