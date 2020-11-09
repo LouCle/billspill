@@ -10,11 +10,17 @@ class Bullet {
         // Move bullet
         this.pos.add(this.vel)
 
-        if (this.pos.x < borderW || this.pos.x > (W-borderW) ||
-            this.pos.y < borderH || this.pos.y > (H-borderH)) {
+        let border = this.pos.x < borderW || this.pos.x > (W-borderW) ||
+            this.pos.y < borderH || this.pos.y > (H-borderH)
+
+        let billecol = false
+
+        if (border || billecol) {
             ents.explosions.push(new Explosion(this.pos.x, this.pos.y, 0, 10, 10, 0.2))
             return DEAD
         }
+
+        
     }
 
     render() {

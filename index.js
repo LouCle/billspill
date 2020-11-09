@@ -12,6 +12,8 @@ let ents = {
     explosions : []
 }
 
+let ds2 = (x1,y1,x2,y2) => (x2-x1)**2+(y2-y1)**2
+
 const DEAD = 0x123456789
 
 // Function for updating entities (duh)
@@ -49,7 +51,7 @@ function updateEntities() {
 
 }
 
-let mgr;
+let mgr
 
 function setup() {
     createCanvas(W, H)

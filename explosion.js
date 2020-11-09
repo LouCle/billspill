@@ -11,7 +11,7 @@ class Explosion {
         // flashing animation
         this.colors = ["#FF0000", "#FFFFFFF"]
         this.currentColor = this.colors[0]
-
+        
     }
 
     update() {
