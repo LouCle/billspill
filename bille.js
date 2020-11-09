@@ -72,12 +72,17 @@ class Bille {
         noStroke()
         // Draw beetle
         ellipse(this.pos.x, this.pos.y, this.size)
+
+        // health
+        noStroke()
+        fill(this.team ? 20 : 235)
+        textSize(30)
+        text(this.health, this.pos.x, this.pos.y-40)
+
         // Draw beetle's FOV
+        /*
         stroke(0,255,255)
         strokeWeight(2)
-
-        textSize(30)
-        text(this.health, this.pos.x, this.pos.y)
 
         let sr = this.sightradius //yeah som om jeg gider skrive det her 40 gange
         let sl = this.sightlength
@@ -85,6 +90,7 @@ class Bille {
         line(this.pos.x, this.pos.y, this.pos.x+cos(this.rot+sr/2)*sl, this.pos.y+sin(this.rot+sr/2)*sl)
         line(this.pos.x, this.pos.y, this.pos.x+cos(this.rot-sr/2)*sl, this.pos.y+sin(this.rot-sr/2)*sl)
         this.checkForTarget()
+        */
     }
     
     checkForTarget() {

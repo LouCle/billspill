@@ -42,7 +42,14 @@ function updateEntities() {
     
     for (let team in biller) {
         for(let i in biller[team]){
-            biller[team][i].render()
+            let bille = biller[team][i]
+            bille.render()
+
+            // health
+            noStroke()
+            fill(team ? 20 : 235)
+            textSize(30)
+            text(i, bille.pos.x, bille.pos.y+40)
         }
     }
 

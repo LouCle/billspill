@@ -19,8 +19,11 @@ class Bullet {
         // check all biller in the opposite team
         for (let i in biller[this.team ? 0 : 1]) {
             let bille = biller[this.team ? 0 : 1][i]
-            if (ds2(bille.pos.x, bille.pos.y, this.pos.x, this.pos.y) < (this.size/2+bille.size/2)**2) billecol = true
-           bille_id = i
+            if (ds2(bille.pos.x, bille.pos.y, this.pos.x, this.pos.y) < (this.size/2+bille.size/2)**2) {
+                billecol = true
+                bille_id = i
+            }
+            
         }
 
         if (border || billecol) {
