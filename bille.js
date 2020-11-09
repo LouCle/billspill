@@ -18,7 +18,7 @@ class Bille {
         // Upgradable properties
         this.mvel = 5 // Max movement speed (or just movement speed)
         this.mrot = 5 // Max rotation speed (same)
-        this.rotmult = 0.1 //Multiplier for rotationspeed (might be irrelevant with mrot existing dunno)
+        this.rotmult = 1 //Multiplier for rotationspeed (might be irrelevant with mrot existing dunno)
         this.firerate = 30 // How quickly the beetle shoots
         this.bulletspeed = 5 // Speed of bullets
         this.bulletsize = 10 // Size of bullets
@@ -27,7 +27,7 @@ class Bille {
         this.sightlength = 800 // How far the beetle can see
         this.sightradius = 50 // The beetle's FOV basically
         this.mouth = 5 // Something with its mouth (damage up close or smth)
-        this.health = 5 // The beetle's health
+        this.health = 500 // The beetle's health
 
         // apply
         for (let upgrade of this.dna.upgradetree) {
@@ -60,8 +60,12 @@ class Bille {
             }
         })
         let chosenBille = biller[int(!this.team)][lowestDist[0][1]]
-        let desiredTurn = p5.Vector.angleBetween(p5.Vector.sub(chosenBille.pos, this.pos), p5.Vector.fromAngle(this.rot))
-        this.angvel = desiredTurn
+        let v1 = p5.Vector.sub(chosenBille.pos, this.pos)
+        let v2 = p5.Vector.fromAngle(this.rot/180*Math.PI)
+        let desiredTurn = degrees(Math.acos(v1.dot(v2) / (v1.mag() * v2.mag())))
+        
+        this.rot = this.rot+desiredTurn
+        console.log(this.rot, this.rot/180*Math.PI)
     }
 
     update() {
@@ -71,7 +75,7 @@ class Bille {
         }
         
         // Turning
-        if(frameCount%60==0) this.turning()
+        if(frameCount%2==0) this.turning()
         
         // Shooting
         this.shooting()
@@ -84,7 +88,7 @@ class Bille {
         this.pos.add(this.vel)
         this.acc.mult(0)
         
-        this.rot += this.angvel*this.rotmult;
+        this.rot += this.angvel*this.rotmult
     }
 
     render() {

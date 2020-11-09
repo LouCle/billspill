@@ -3,7 +3,7 @@
 let W = window.innerWidth
 let H = window.innerHeight
 let borderW = 100
-let BILLE_AMOUNT = 5000
+let BILLE_AMOUNT = 2
 let borderH = 100
 let biller = [[],[]]
 let dnas = [] // dna, where index corresponds to team
