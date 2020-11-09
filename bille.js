@@ -16,7 +16,7 @@ class Bille {
         
 
         // Upgradable properties
-        this.mvel = 5 // Max movement speed (or just movement speed)
+        this.mvel = 1 // Max movement speed (or just movement speed)
         this.mrot = 5 // Max rotation speed (same)
         this.rotmult = 1 //Multiplier for rotationspeed (might be irrelevant with mrot existing dunno)
         this.firerate = 30 // How quickly the beetle shoots
@@ -27,7 +27,7 @@ class Bille {
         this.sightlength = 800 // How far the beetle can see
         this.sightradius = 50 // The beetle's FOV basically
         this.mouth = 5 // Something with its mouth (damage up close or smth)
-        this.health = 500 // The beetle's health
+        this.health = 5 // The beetle's health
 
         // apply
         for (let upgrade of this.dna.upgradetree) {
@@ -62,10 +62,20 @@ class Bille {
         let chosenBille = biller[int(!this.team)][lowestDist[0][1]]
         let v1 = p5.Vector.sub(chosenBille.pos, this.pos)
         let v2 = p5.Vector.fromAngle(this.rot/180*Math.PI)
-        let desiredTurn = degrees(Math.acos(v1.dot(v2) / (v1.mag() * v2.mag())))
+
+        // get signed angle between them
+        let desiredTurn = atan2(v1.y,v1.x) - atan2(v2.y,v2.x)
+
+        // correct to turn the most efficient direction - looks like it works, idk
+        let corrector = -1
+        if (desiredTurn > 180 || desiredTurn < -180) {
+            corrector = -1
+        } else {
+            corrector = 1
+        }
+
+        this.angvel = corrector * Math.sign(desiredTurn) * this.mvel
         
-        this.rot = this.rot+desiredTurn
-        console.log(this.rot, this.rot/180*Math.PI)
     }
 
     update() {
