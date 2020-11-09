@@ -22,12 +22,12 @@ function updateEntities() {
 
     for (let team in biller) {
         for (let i in biller[team]){
-            biller[team][i].update()
-            // for(let j = 0; j < biller[i].bulletarray.length; j++){
-            //     biller[i].bulletarray[j].update();
-            //     biller[i].bulletarray[j].render();
-            // }
+            let rcode = biller[team][i].update()
+            if (rcode == DEAD) {
+                biller[team].splice(i, 1)
+            }
         }
+
     }
 
     for (let i of Object.keys(ents)) {
@@ -39,16 +39,16 @@ function updateEntities() {
             }
         }
     }
-
-    for (let i of Object.keys(ents)) {
-        for (let j in ents[i]) {
-            ents[i][j].render()
-        }
-    }
     
     for (let team in biller) {
         for(let i in biller[team]){
             biller[team][i].render()
+        }
+    }
+
+    for (let i of Object.keys(ents)) {
+        for (let j in ents[i]) {
+            ents[i][j].render()
         }
     }
 }
@@ -227,7 +227,7 @@ function Game() {
 
         for (let i = 0; i < BILLE_AMOUNT; i++) {
             // create BILLE_AMOUNT of biller, using the dna of the respective team
-            biller[i%2].push(new Bille(random(borderW, W-borderW), random(borderH, H-borderH), dnas[i%2], 5, 5, 30, 10, 10, 50, 500, 800, 50, 5, 2, i%2, 1))
+            biller[i%2].push(new Bille(random(borderW, W-borderW), random(borderH, H-borderH), dnas[i%2], 5, 5, 30, 10, 10, 50, 500, 800, 50, 5, 5, i%2, 1))
         }
     }
 

@@ -14,9 +14,17 @@ class Bullet {
             this.pos.y < borderH || this.pos.y > (H-borderH)
 
         let billecol = false
+        let bille_id = 0
+
+        // check all biller in the opposite team
+        for (let i in biller[this.team ? 0 : 1]) {
+            let bille = biller[this.team ? 0 : 1][i]
+            if (ds2(bille.pos.x, bille.pos.y, this.pos.x, this.pos.y) < (this.size/2+bille.size/2)**2) billecol = true
+           bille_id = i
+        }
 
         if (border || billecol) {
-            ents.explosions.push(new Explosion(this.pos.x, this.pos.y, 0, 10, 10, 0.2))
+            ents.explosions.push(new Explosion(this.pos.x, this.pos.y, 1, 10, 10, 0.5, billecol ? bille_id : null, this.team))
             return DEAD
         }
 

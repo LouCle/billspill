@@ -13,6 +13,7 @@ class Bille {
         this.rot = random(360) // Which way the beetle is facing
         this.angvel = angvel //rotation direction
         this.team = team // Which team the beetle is on
+        
 
         // Upgradable properties
         this.mvel = mvel // Max movement speed (or just movement speed)
@@ -44,9 +45,16 @@ class Bille {
     }
 
     update() {
+
+        if (this.health <= 0) {
+            return DEAD
+        }
+
         // Shooting
         this.shooting()
         this.move()
+
+        
     }
 
     move() {
@@ -67,6 +75,9 @@ class Bille {
         // Draw beetle's FOV
         stroke(0,255,255)
         strokeWeight(2)
+
+        textSize(30)
+        text(this.health, this.pos.x, this.pos.y)
 
         let sr = this.sightradius //yeah som om jeg gider skrive det her 40 gange
         let sl = this.sightlength
