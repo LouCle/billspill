@@ -132,7 +132,7 @@ function Betting() {
         if (dnas.length == 0) {
             // for now, only 2 teams
             for (let i = 0; i < 2; i++) {
-                dnas.push(new BilleDNA(5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2))
+                dnas.push(new BilleDNA([{"iq" : 10}, {"size" : 5}, {"bulletspeed" : 10}]))
             }
         }
 
@@ -205,7 +205,7 @@ function Game() {
 
         for (let i = 0; i < BILLE_AMOUNT; i++) {
             // create BILLE_AMOUNT of biller, using the dna of the respective team
-            biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), dnas[i%2], i%2, 1)
+            biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), dnas[i%2], 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2, 1)
         }
     }
 
