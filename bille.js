@@ -46,6 +46,9 @@ class Bille {
     
     turning() {
         // Turn to look at enemy
+
+        if (biller[int(!this.team)].length == 0) return // early return to avoid out of index errors
+
         let lowestDist = []
         for (let i in biller[int(!this.team)]) {
             let enemyBille = biller[int(!this.team)][i]
@@ -80,6 +83,7 @@ class Bille {
 
     update() {
 
+
         if (this.health <= 0) {
             return DEAD
         }
@@ -97,7 +101,7 @@ class Bille {
         this.vel.add(this.acc)
         this.pos.add(this.vel)
         this.acc.mult(0)
-        
+
         this.rot += this.angvel*this.rotmult
     }
 

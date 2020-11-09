@@ -16,9 +16,37 @@ let ds2 = (x1,y1,x2,y2) => (x2-x1)**2+(y2-y1)**2
 
 const DEAD = 0x123456789
 
+
+let mgr
+
+function setup() {
+    createCanvas(W, H)
+    background(0)
+
+    mgr = new SceneManager()
+
+    mgr.addScene(Game)
+    mgr.addScene(Menu)
+    mgr.showScene(Menu)
+}
+
+function draw() {
+    mgr.draw()
+}
+
+function keyPressed() {
+    mgr.handleEvent("keyPressed")
+}
+
 // Function for updating entities (duh)
 function updateEntities() {
     // Split these into two, as I think doing them both at once for each beetle could lead to dead beetles being alive for an extra frame, probably not worth splitting the loop for that but w/e I'm tired - H)
+
+    if (biller[0].length == 0 || biller[1].length == 0) {
+        mgr.showScene(Win)
+        return
+    }
+
 
     for (let team in biller) {
         for (let i in biller[team]){
@@ -58,27 +86,6 @@ function updateEntities() {
             ents[i][j].render()
         }
     }
-}
-
-let mgr
-
-function setup() {
-    createCanvas(W, H)
-    background(0)
-
-    mgr = new SceneManager()
-
-    mgr.addScene(Game)
-    mgr.addScene(Menu)
-    mgr.showScene(Menu)
-}
-
-function draw() {
-    mgr.draw()
-}
-
-function keyPressed() {
-    mgr.handleEvent("keyPressed")
 }
 
 function Menu() {
@@ -225,12 +232,39 @@ function Betting() {
     }
 }
 
+function Win() {
+    this.setup = function () {
+
+    }
+
+    this.draw = function() {
+        background(color(50,50,50))
+
+        let winTeam = !biller[0].length ? 0 : 1
+        
+        textSize(W/7)
+        textFont("Consolas")
+        textAlign(CENTER)
+        stroke(255)
+        text(winTeam + " WON!", W/2, H/2)
+        textSize(W/20)
+        text("Press SPACE to continue", W/2, H/2 + H/6)
+    }
+
+    this.keyPressed = function() {
+        if (keyCode == 32)
+            this.sceneManager.showScene(Betting)
+    }
+}
+
 // scene for beetle teams actually fighting
 function Game() {
 
-    this.setup = function () {
+    this.enter = function () {
         background(0)
         angleMode(DEGREES)
+
+        biller = [[],[]]
 
         for (let i = 0; i < BILLE_AMOUNT; i++) {
             // create BILLE_AMOUNT of biller, using the dna of the respective team
