@@ -76,14 +76,36 @@ function Menu() {
 
     }
 
+    this.balls = []
+
     this.menu = ["Evolution", "Skirmish", "Test"]
     this.sel = 0
 
-    
 
     this.draw = function() {
 
-        background(color(20,120,100))
+        background(color(20,20,20))
+
+        // some background animation
+        if (frameCount % 5 == 0) this.balls.push({x:-100,y:random(0,H), vx:random(5,10), vy:random(-5,5)})
+        
+        noStroke()
+        for (let i = 0; i < this.balls.length; i++) {
+            let ball = this.balls[i]
+            let d = sqrt((ball.x-W/2)**2+(ball.y-H/2)**2)
+            let r = 0.2*ball.y -0.01*d
+            fill(map(d, 0, W+H, 0, 200))
+            ellipse(ball.x,ball.y,r)
+            fill(map(d, 0, W+H, 0, 255))
+            ellipse(ball.x+r/5,ball.y,r)
+            ball.x+=ball.vx
+            ball.y+=ball.vy
+            if (ball.x > W+r) {
+                this.balls.splice(i,1)
+            } 
+          
+        }
+
         textSize(100)
         textAlign(CENTER)
         fill(0)
@@ -97,6 +119,7 @@ function Menu() {
         for (let opt in this.menu) {
             text( ((this.sel == opt) ? "▶ " : "  ") + this.menu[opt], W/3, 2*H/3 + opt*50)
         }
+
 
     }
 
@@ -126,7 +149,7 @@ function Betting() {
     let sel = 0;
 
     this.setup = function() {
-        background(color(20,120,100))
+        background(color(20,20,20))
 
         // if it's the first time you're loading the game, it's as if dnas[] is empty, so we make two basic DNAs for each team
         if (dnas.length == 0) {
@@ -151,16 +174,26 @@ function Betting() {
     }
 
     this.draw = function() {
-        background(color(20,120,100))
+        background(color(20,20,20))
 
-        fill(color('rgba(100,100,100,0.5)'))
-        rect(sel*W/2, 0, W/2, H)
+        noStroke()
+        fill(235)
+        rect(0, 0, W/2, H)
+        fill(20)
+        rect(W/2, 0, W/2, H)
 
         for (let team in nodes) {
             for (let node in nodes[team]) {
                 nodes[team][node].render(node, nodes[team].length)
             }
         }
+
+        noStroke()
+        textSize(W/7)
+        textFont("Consolas")
+        textAlign(CENTER)
+        fill(sel==0?20:235)
+        text("BET", W/4+sel*W/4*2, H-H/6)
     }
 
     this.keyPressed = function() {
@@ -196,7 +229,7 @@ function Game() {
 
     // Draw function (runs in a loop)
     this.draw = function () {
-        background(color(50,150,100))
+        background(color(50,50,50))
         updateEntities()
     }
 }

@@ -61,7 +61,7 @@ class Bille {
 
     render() {
         // Color
-        fill(this.team*255)
+        fill(this.team ? 235 : 20)
         noStroke()
         // Draw beetle
         ellipse(this.pos.x, this.pos.y, this.size)

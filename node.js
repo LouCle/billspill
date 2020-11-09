@@ -17,10 +17,12 @@ class Node {
         let x = this.team * W/2 + W/6
         let y = H/8 + node*dist
 
-        stroke(255)
-
+        stroke(this.team?20:235)
+        fill((this.team == 0)?20:235)
         let key = Object.keys(this.upgrade)[0]
         textSize(30)
+
+        textAlign(LEFT)
         text("+" + this.upgrade[key] + " " + key, x, y)
     }
 }
