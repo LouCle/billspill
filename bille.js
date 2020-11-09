@@ -47,7 +47,6 @@ class Bille {
         // Shooting
         this.shooting()
         this.move()
-
     }
 
     move() {
@@ -55,7 +54,7 @@ class Bille {
         this.vel.add(this.acc)
         this.pos.add(this.vel)
         this.acc.mult(0)
-        this.rot += this.angvel*this.rotmult
+        //this.rot += this.angvel*this.rotmult
 
     }
 

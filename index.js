@@ -5,7 +5,7 @@ let H = window.innerHeight
 let borderW = 100
 let BILLE_AMOUNT = 6
 let borderH = 100
-let biller = []
+let biller = [[],[]]
 let dnas = [] // dna, where index corresponds to team
 let ents = {
     bullets : [],
@@ -20,13 +20,14 @@ const DEAD = 0x123456789
 function updateEntities() {
     // Split these into two, as I think doing them both at once for each beetle could lead to dead beetles being alive for an extra frame, probably not worth splitting the loop for that but w/e I'm tired - H)
 
-
-    for (let i in biller){
-        biller[i].update()
-        // for(let j = 0; j < biller[i].bulletarray.length; j++){
-        //     biller[i].bulletarray[j].update();
-        //     biller[i].bulletarray[j].render();
-        // }
+    for (let team in biller) {
+        for (let i in biller[team]){
+            biller[team][i].update()
+            // for(let j = 0; j < biller[i].bulletarray.length; j++){
+            //     biller[i].bulletarray[j].update();
+            //     biller[i].bulletarray[j].render();
+            // }
+        }
     }
 
     for (let i of Object.keys(ents)) {
@@ -44,11 +45,12 @@ function updateEntities() {
             ents[i][j].render()
         }
     }
-
-    for(let i in biller){
-        biller[i].render()
+    
+    for (let team in biller) {
+        for(let i in biller[team]){
+            biller[team][i].render()
+        }
     }
-
 }
 
 let mgr
@@ -225,7 +227,7 @@ function Game() {
 
         for (let i = 0; i < BILLE_AMOUNT; i++) {
             // create BILLE_AMOUNT of biller, using the dna of the respective team
-            biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), dnas[i%2], 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2, 1)
+            biller[i%2].push(new Bille(random(borderW, W-borderW), random(borderH, H-borderH), dnas[i%2], 5, 5, 30, 10, 10, 50, 500, 800, 50, 5, 2, i%2, 1))
         }
     }
 
