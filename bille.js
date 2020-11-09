@@ -5,31 +5,31 @@ class BilleDNA {
 }
 
 class Bille {
-    constructor(x, y, dna, mvel, mrot, firerate, bulletspeed, bulletsize, size, iq, sightlength, sightradius, mouth, health, team, angvel) {
+    constructor(x, y, dna, team) {
         this.dna = dna
         this.pos = createVector(x,y) // The beetle's position
         this.vel = createVector(0,0) // The beetle's velocity
         this.acc = createVector(0,0) // The beetle's acceleration
         this.rot = random(360) // Which way the beetle is facing
-        this.angvel = angvel //rotation direction
+        this.angvel = 0 //rotation direction
         this.team = team // Which team the beetle is on
         
 
         // Upgradable properties
-        this.mvel = mvel // Max movement speed (or just movement speed)
-        this.mrot = mrot // Max rotation speed (same)
+        this.mvel = 5 // Max movement speed (or just movement speed)
+        this.mrot = 5 // Max rotation speed (same)
         this.rotmult = 0.1 //Multiplier for rotationspeed (might be irrelevant with mrot existing dunno)
-        this.firerate = firerate // How quickly the beetle shoots
-        this.bulletspeed = bulletspeed // Speed of bullets
-        this.bulletsize = bulletsize // Size of bullets
-        this.size = size // How big the beetle is
-        this.iq = iq // Noget med ai
-        this.sightlength = sightlength // How far the beetle can see
-        this.sightradius = sightradius // The beetle's FOV basically
-        this.mouth = mouth // Something with its mouth (damage up close or smth)
-        this.health = health // The beetle's health
+        this.firerate = 30 // How quickly the beetle shoots
+        this.bulletspeed = 5 // Speed of bullets
+        this.bulletsize = 10 // Size of bullets
+        this.size = 50 // How big the beetle is
+        this.iq = 500 // Noget med ai
+        this.sightlength = 800 // How far the beetle can see
+        this.sightradius = 50 // The beetle's FOV basically
+        this.mouth = 5 // Something with its mouth (damage up close or smth)
+        this.health = 5 // The beetle's health
 
-        /* apply DNA */
+        // apply
         for (let upgrade of this.dna.upgradetree) {
             let key = Object.keys(upgrade)[0]
             this[key] = this[key] + upgrade[key]
