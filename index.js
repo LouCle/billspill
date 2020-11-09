@@ -223,7 +223,7 @@ function Game() {
 
         for (let i = 0; i < BILLE_AMOUNT; i++) {
             // create BILLE_AMOUNT of biller, using the dna of the respective team
-            biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), dnas[i%2], 5, 5, 30, 10, 10, 50, 500, 200, 60, 5, 2, i%2, 1)
+            biller[i] = new Bille(random(borderW, W-borderW), random(borderH, H-borderH), dnas[i%2], 5, 5, 30, 10, 10, 50, 500, 800, 50, 5, 2, i%2, 1)
         }
     }
 
