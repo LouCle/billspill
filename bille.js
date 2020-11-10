@@ -138,6 +138,8 @@ class Bille {
         this.vel.add(this.acc)
         this.vel.limit(this.mvel)
         this.pos.add(this.vel)
+        this.pos.x = constrain(this.pos.x, borderW, W-borderW)
+        this.pos.y = constrain(this.pos.y, borderH, H-borderW)
         this.acc.mult(0)
 
     }
