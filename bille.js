@@ -13,6 +13,7 @@ class Bille {
         this.rot = random(360) // Which way the beetle is facing
         this.angvel = 0 //rotation direction
         this.team = team // Which team the beetle is on
+        this.target = createVector(0,0) // Which beetle the beetle is currently targeting
         
 
         // Upgradable properties
@@ -22,14 +23,15 @@ class Bille {
         this.firerate = 30 // How quickly the beetle shoots
         this.bulletspeed = 5 // Speed of bullets
         this.bulletsize = 10 // Size of bullets
+        this.accuracy = 40 // the lower the better
         this.size = 50 // How big the beetle is
         this.iq = 500 // Noget med ai
         this.sightlength = 800 // How far the beetle can see
         this.sightradius = 50 // The beetle's FOV basically
         this.mouth = 5 // Something with its mouth (damage up close or smth)
-        this.health = 5 // The beetle's health
+        this.health = 5// The beetle's health
 
-        // apply
+        
         for (let upgrade of this.dna.upgradetree) {
             let key = Object.keys(upgrade)[0]
             this[key] = this[key] + upgrade[key]
@@ -44,7 +46,7 @@ class Bille {
         }
     }
     
-    turning() {
+    findTarget() {
         // Turn to look at enemy
 
         if (biller[int(!this.team)].length == 0) return // early return to avoid out of index errors
@@ -63,11 +65,18 @@ class Bille {
             }
         })
         let chosenBille = biller[int(!this.team)][lowestDist[0][1]]
-        let v1 = p5.Vector.sub(chosenBille.pos, this.pos)
+        this.target = chosenBille.pos
+        
+    }
+
+    aim() {
+        let v1 = p5.Vector.sub(this.target, this.pos)
         let v2 = p5.Vector.fromAngle(this.rot/180*Math.PI)
 
+        let acc_off = random(-this.accuracy,this.accuracy)
+
         // get signed angle between them
-        let desiredTurn = atan2(v1.y,v1.x) - atan2(v2.y,v2.x)
+        let desiredTurn = atan2(v1.y,v1.x) - atan2(v2.y,v2.x) + acc_off
 
         // correct to turn the most efficient direction - looks like it works, idk
         let corrector = -1
@@ -76,9 +85,15 @@ class Bille {
         } else {
             corrector = 1
         }
+        let desiredAng = mod(atan2(v1.y,v1.x) + acc_off, 360)
+        let billeAng = mod(this.rot, 360)
+        if (d(this.rot,desiredAng) < this.mvel+1) {
+            this.angvel = 0
+            this.rot = desiredAng
+        } else {
+            this.angvel = corrector * Math.sign(desiredTurn) * this.mvel
+        }
 
-        this.angvel = corrector * Math.sign(desiredTurn) * this.mvel
-        
     }
 
     update() {
@@ -89,7 +104,9 @@ class Bille {
         }
         
         // Turning
-        if(frameCount%2==0) this.turning()
+        if(frameCount%60==0) this.findTarget()
+
+        if (frameCount%2==0) this.aim()
         
         // Shooting
         this.shooting()
