@@ -3,7 +3,7 @@
 let W = window.innerWidth
 let H = window.innerHeight
 let borderW = 100
-let BILLE_AMOUNT = 10
+let BILLE_AMOUNT = 4
 let borderH = 100
 let biller = [[],[]]
 let dnas = [] // dna, where index corresponds to team
@@ -16,7 +16,10 @@ let ds2 = (x1,y1,x2,y2) => (x2-x1)**2+(y2-y1)**2
 let d = (x1,x2) => Math.abs(x2-x1)
 let mod = (a, n) => a - Math.floor(a/n) * n
 
-const DEAD = 0x123456789
+const DEAD = "DEAD"
+const CHASING = "CHASING"
+const FLEEING = "FLEEING"
+const FLEEFROMTARGET = "FLEEFROMTARGET"
 
 
 let mgr
@@ -76,10 +79,10 @@ function updateEntities() {
             bille.render()
 
             // health
-            noStroke()
-            fill(team ? 20 : 235)
-            textSize(30)
-            text(i, bille.pos.x, bille.pos.y+40)
+            //noStroke()
+            //fill(team ? 20 : 235)
+            //textSize(30)
+            //text(i, bille.pos.x, bille.pos.y+40)
         }
     }
 
