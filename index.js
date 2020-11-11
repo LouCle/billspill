@@ -3,7 +3,7 @@
 let W = window.innerWidth
 let H = window.innerHeight
 let borderW = 100
-let BILLE_AMOUNT = 10
+let BILLE_AMOUNT = 4
 let borderH = 100
 let biller = [[],[]]
 let dnas = [] // dna, where index corresponds to team
@@ -20,6 +20,8 @@ const DEAD = "DEAD"
 const CHASING = "CHASING"
 const FLEEING = "FLEEING"
 const FLEEFROMTARGET = "FLEEFROMTARGET"
+const DODGE = "DODGE"
+const TESTING = true // change to true to render testing information
 
 
 let mgr

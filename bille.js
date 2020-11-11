@@ -8,30 +8,33 @@ class Bille {
     constructor(x, y, dna, team) {
         // Upgradable properties
         this.mvel = 2 // Max movement speed (or just movement speed)
-        this.mrot = 5 // Max rotation speed (same)
+        this.mrot = 8 // Max rotation speed (same)
         this.rotmult = 1 //Multiplier for rotationspeed (might be irrelevant with mrot existing dunno)
-        this.firerate = 30 // How quickly the beetle shoots
-        this.bulletspeed = 5 // Speed of bullets
+        this.firerate = 60 // How quickly the beetle shoots
+        this.bulletspeed = 2 // Speed of bullets
         this.bulletsize = 10 // Size of bullets
-        this.accuracy = 0 // the lower the better
+        this.accuracy = 20 // the lower the better
         this.size = 50 // How big the beetle is
         this.iq = 500 // Noget med ai
         this.sightlength = 800 // How far the beetle can see
         this.sightradius = 50 // The beetle's FOV basically
         this.mouth = 5 // Something with its mouth (damage up close or smth)
-        this.maxhealth = 15// The beetle's health
+        this.maxhealth = 5// The beetle's health
 
         // temp
         this.dna = dna
         this.pos = createVector(x,y) // The beetle's position
         this.vel = createVector(0,0) // The beetle's velocity
+        this.nextPos = createVector(0,0) // Next position on pathing
         this.acc = createVector(0,0) // The beetle's acceleration
         this.rot = random(360) // Which way the beetle is facing
         this.angvel = 0 //rotation direction
         this.enemy_center_of_mass = createVector(0,0)
         this.team = team // Which team the beetle is on
         this.target = createVector(0,0) // Which beetle the beetle is currently targeting
+        this.closestBille = {health : 0};
         this.state = CHASING // CHASING or FLEEING or FLEEFROMTARGET
+        this.bulletToDodge = createVector(0,0)
         this.health = this.maxhealth
 
         for (let upgrade of this.dna.upgradetree) {
@@ -70,6 +73,7 @@ class Bille {
         let chosenBille = biller[int(!this.team)][lowestDist[0][1]]
         this.enemy_center_of_mass.div(biller[int(!this.team)].length)
         this.target = chosenBille.pos
+        this.closestBille = chosenBille
         
     }
 
@@ -84,13 +88,16 @@ class Bille {
 
         // correct to turn the most efficient direction - looks like it works, idk
         let corrector = -1
+
         if (desiredTurn > 180 || desiredTurn < -180) {
             corrector = -1
         } else {
             corrector = 1
         }
+
         let desiredAng = mod(atan2(v1.y,v1.x) + acc_off, 360)
         let billeAng = mod(this.rot, 360)
+
         if (d(this.rot,desiredAng) < this.mrot+1) {
             this.angvel = 0
             this.rot = desiredAng
@@ -103,19 +110,37 @@ class Bille {
 
     }
 
+    dodge() {
+        for (let i in ents.bullets) {
+            let bullet = ents.bullets[i]
+            if (bullet.team != this.team && ds2(bullet.pos.x, bullet.pos.y, this.pos.x, this.pos.y) < 200**2) {
+                return createVector(bullet.vel.x, bullet.vel.y)
+            }
+        }
+        return false
+    }
+
     update() {
 
+        let k = this.dodge();
 
         if (this.health <= 0) {
             return DEAD
-        } else if (this.health < Math.ceil(this.maxhealth/2)) {
-            this.state = FLEEING
-        } else if (ds2(this.pos.x, this.pos.y, this.target.x, this.target.y) < 150**2) {
+        } else if (k && !this.isDodging) {
+            //this.state = DODGE
+            //this.isDodging = true
+            //this.dodgeTo = createVector(random(-2, 2), random(-2, 2))
+            //this.bulletToDodge = k
+        } //else if (this.health < Math.ceil(this.maxhealth/3)) {
+            //this.state = FLEEING
+        else if (ds2(this.pos.x, this.pos.y, this.target.x, this.target.y) < 150**2 || this.closestBille.health > this.health) {
             this.state = FLEEFROMTARGET
-        } else {
+        } else if (ds2(this.pos.x, this.pos.y, this.target.x, this.target.y) > 300**2 && this.closestBille.health < this.health) {
            this.state = CHASING
         }
-        
+
+        if (!k) this.isDodging = false
+
         // Turning
         if(frameCount%60==0) this.findTarget()
 
@@ -134,6 +159,11 @@ class Bille {
             this.acc = p5.Vector.sub(this.target,this.pos).normalize().mult(0.1)
         } else if (this.state == FLEEFROMTARGET) {
             this.acc = p5.Vector.sub(this.pos,this.target).normalize().mult(0.1)
+        } else if (this.state == DODGE) {
+            // TODO: replace the dodging with simply just moving to a random point 
+            if (this.isDodging) {
+                this.acc = this.dodgeTo
+            }
         }
         this.vel.add(this.acc)
         this.vel.limit(this.mvel)
@@ -160,7 +190,7 @@ class Bille {
         noStroke()
         fill(this.team ? 20 : 235)
         textSize(30)
-        text(this.state, this.pos.x, this.pos.y+40)
+        if (TESTING) text(this.state, this.pos.x, this.pos.y+40)
         
         // Rotation mark
         stroke(255,0,0)
